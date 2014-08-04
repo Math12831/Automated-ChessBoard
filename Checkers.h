@@ -29,7 +29,7 @@
 // The game structure
 typedef struct _game { 
   int currentTurn;
-  char checkersBoard[ROWS][COLS];
+  char checkersBoard[NUM_OF_ROWS][NUM_OF_COLUMNS];
 } game;
 
 // Simple action structure - may include more items later for chess
