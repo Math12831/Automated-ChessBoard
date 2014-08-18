@@ -1,7 +1,7 @@
 // Checkers.c
-// Version 1.0
+// Version 1.1
 // Basic definitions for each function
-// Missing isLegal function for the moment
+// Includes isLegal function
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,13 +16,13 @@ Game newGame (int gameNumber) {
     // Initialisation of variables
     g->currentTurn = 1;
     g->checkersBoard = {{BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE},
-                        {NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER},
-                        {BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE},
-                        {NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE},
-                        {NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE},
-                        {WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE},
-                        {NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER},
-                        {WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE}};
+        {NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER},
+        {BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE, BLACK_CHECKER, NO_PIECE},
+        {NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE},
+        {NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE, NO_PIECE},
+        {WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE},
+        {NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER},
+        {WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE, WHITE_CHECKER, NO_PIECE}};
     
     // Initialising the players
     
@@ -38,6 +38,54 @@ void disposeGame (Game g) {
     // The memory has been erased!
     // The game never happened...
     free(g);
+}
+
+int isLegalMove (Game g, Action a, int row, int col, int player) {
+    // Can the move be played?
+    int ans = 1;
+    
+    if ((g->checkersBoard[row][col] == BLACK_CHECKER && player == 2) || (g->checkersBoard[row][col] == BLACK_CROWNED_CHECKER && player == 2) ||
+        (g->checkersBoard[row][col] == WHITE_CROWNED_CHECKER && player == 1) || (g->checkersBoard[row][col] == WHITE_CHECKER && player == 1)) {
+        if (a->actionCode == MOVE_BACKWARD_LEFT) {
+            if (row == 0 || col == 0) {
+                ans = 0;
+            } else {
+                if ((g->checkersBoard[row - 1][col - 1] == BLACK_CHECKER && player == 2) || (g->checkersBoard[row - 1][col - 1] == BLACK_CROWNED_CHECKER && player == 2) ||
+                    (g->checkersBoard[row - 1][col - 1] == WHITE_CROWNED_CHECKER && player == 1) || (g->checkersBoard[row - 1][col - 1] == WHITE_CHECKER && player == 1)) {
+                    ans = 0;
+                }
+            }
+        } else if (a->actionCode == MOVE_BACKWARD_RIGHT) {
+            if (row == (NUM_OF_ROWS - 1) || col == 0) {
+                ans = 0;
+            } else {
+                if ((g->checkersBoard[row + 1][col - 1] == BLACK_CHECKER && player == 2) || (g->checkersBoard[row + 1][col - 1] == BLACK_CROWNED_CHECKER && player == 2) ||
+                    (g->checkersBoard[row + 1][col - 1] == WHITE_CROWNED_CHECKER && player == 1) || (g->checkersBoard[row + 1][col - 1] == WHITE_CHECKER && player == 1)) {
+                    ans = 0;
+                }
+            }
+        } else if (a->actionCode == MOVE_FORWARD_LEFT) {
+            if (row == 0 || col == (NUM_OF_COLUMNS - 1)) {
+                ans = 0;
+            } else {
+                if ((g->checkersBoard[row - 1][col + 1] == BLACK_CHECKER && player == 2) || (g->checkersBoard[row - 1][col + 1] == BLACK_CROWNED_CHECKER && player == 2) ||
+                    (g->checkersBoard[row - 1][col + 1] == WHITE_CROWNED_CHECKER && player == 1) || (g->checkersBoard[row - 1][col + 1] == WHITE_CHECKER && player == 1)) {
+                    ans = 0;
+                }
+            }
+        } else if (a->actionCode == MOVE_FORWARD_RIGHT) {
+            if (row == (NUM_OF_ROWS - 1) || col == (NUM_OF_COLUMNS - 1)) {
+                ans = 0;
+            } else {
+                if ((g->checkersBoard[row + 1][col + 1] == BLACK_CHECKER && player == 2) || (g->checkersBoard[row + 1][col + 1] == BLACK_CROWNED_CHECKER && player == 2) ||
+                    (g->checkersBoard[row + 1][col + 1] == WHITE_CROWNED_CHECKER && player == 1) || (g->checkersBoard[row + 1][col + 1] == WHITE_CHECKER && player == 1)) {
+                    ans = 0;
+                }
+            }
+        }
+    }
+    
+    return ans;
 }
 
 void moveChecks (Game g, Action a, int row, int col, int player) {
@@ -78,23 +126,24 @@ void makeMove (Game g, Action a, int row, int col) {
     } else if (g->checkersBoard[row][col] == WHITE_CHECKER || g->checkersBoard[row][col] == WHITE_CROWNED_CHECKER) {
         player = 1;
     }
-    isLegalMove(g, a);
-    if (a->actionCode == MOVE_BACKWARD_LEFT) {
-        g->checkersBoard[row - 2][col - 2] = g->checkersBoard[row][col];
-        g->checkersBoard[row][col] = NO_PIECE;
-        moveChecks (g, a, row, col, player);
-    } else if (a->actionCode == MOVE_BACKWARD_RIGHT) {
-        g->checkersBoard[row - 2][col + 2] = g->checkersBoard[row][col];
-        g->checkersBoard[row][col] = NO_PIECE;
-        moveChecks (g, a, row, col, player);
-    } else if (a->actionCode == MOVE_FORWARD_LEFT) {
-        g->checkersBoard[row + 2][col - 2] = g->checkersBoard[row][col];
-        g->checkersBoard[row][col] = NO_PIECE;
-        moveChecks (g, a, row, col, player);
-    } else if (a->actionCode == MOVE_FORWARD_RIGHT) {
-        g->checkersBoard[row + 2][col + 2] = g->checkersBoard[row][col];
-        g->checkersBoard[row][col] = NO_PIECE;
-        moveChecks (g, a, row, col, player);
+    if (isLegalMove(g, a, row, col, player) == 1) {
+        if (a->actionCode == MOVE_BACKWARD_LEFT) {
+            g->checkersBoard[row - 2][col - 2] = g->checkersBoard[row][col];
+            g->checkersBoard[row][col] = NO_PIECE;
+            moveChecks (g, a, row, col, player);
+        } else if (a->actionCode == MOVE_BACKWARD_RIGHT) {
+            g->checkersBoard[row - 2][col + 2] = g->checkersBoard[row][col];
+            g->checkersBoard[row][col] = NO_PIECE;
+            moveChecks (g, a, row, col, player);
+        } else if (a->actionCode == MOVE_FORWARD_LEFT) {
+            g->checkersBoard[row + 2][col - 2] = g->checkersBoard[row][col];
+            g->checkersBoard[row][col] = NO_PIECE;
+            moveChecks (g, a, row, col, player);
+        } else if (a->actionCode == MOVE_FORWARD_RIGHT) {
+            g->checkersBoard[row + 2][col + 2] = g->checkersBoard[row][col];
+            g->checkersBoard[row][col] = NO_PIECE;
+            moveChecks (g, a, row, col, player);
+        }
     }
 }
 
