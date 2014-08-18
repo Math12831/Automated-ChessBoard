@@ -1,5 +1,5 @@
 // Checkers.h
-// Version 1.2
+// Version 1.3
 // Includes basic function declerations
 // These functions can be called by the player and the AI only.
 
@@ -80,6 +80,6 @@ int getCrownedCheckers (Game g, int player);
 
 // This is a big one. It will require me to find out a few things about the game.
 // Basically, is the move you have specified legal or illegal?
-int isLegalMove (Game g, Action a);
+int isLegalMove (Game g, Action a, int row, int col, int player);
 
 // Enjoy!
