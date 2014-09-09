@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include "Checkers.h"
 
-void moveChecks (Game g, Action a, int row, int col, int player);
+-(void) moveChecks (Game g, Action a, NSInteger row, NSInteger col, NSInteger player);
 
-Game newGame (int gameNumber) {
+Game newGame (NSInteger gameNumber) {
     // Allocation of the game in memory
     Game g = malloc(sizeof(game));
     
@@ -34,15 +34,15 @@ Game newGame (int gameNumber) {
     return g;
 }
 
-void disposeGame (Game g) {
+-(void) disposeGame (Game g) {
     // The memory has been erased!
     // The game never happened...
     free(g);
 }
 
-int isLegalMove (Game g, Action a, int row, int col, int player) {
+-(NSInteger) isLegalMove (Game g, Action a, NSInteger row, NSInteger col, NSInteger player) {
     // Can the move be played?
-    int ans = 1;
+    NSInteger ans = 1;
     
     if ((g->checkersBoard[row][col] == BLACK_CHECKER && player == 2) || (g->checkersBoard[row][col] == BLACK_CROWNED_CHECKER && player == 2) ||
         (g->checkersBoard[row][col] == WHITE_CROWNED_CHECKER && player == 1) || (g->checkersBoard[row][col] == WHITE_CHECKER && player == 1)) {
@@ -88,9 +88,9 @@ int isLegalMove (Game g, Action a, int row, int col, int player) {
     return ans;
 }
 
-void moveChecks (Game g, Action a, int row, int col, int player) {
-    int rowChange;
-    int colChange;
+-(void) moveChecks (Game g, Action a, NSInteger row, NSInteger col, NSInteger player) {
+    NSInteger rowChange;
+    NSInteger colChange;
     if (a->actionCode == MOVE_BACKWARD_LEFT) {
         rowChange = -1;
         colChange = -1;
@@ -119,8 +119,8 @@ void moveChecks (Game g, Action a, int row, int col, int player) {
     }
 }
 
-void makeMove (Game g, Action a, int row, int col) {
-    int player;
+-(void) makeMove (Game g, Action a, NSInteger row, NSInteger col) {
+    NSInteger player;
     if (g->checkersBoard[row][col] == BLACK_CHECKER || g->checkersBoard[row][col] == BLACK_CROWNED_CHECKER) {
         player = 2;
     } else if (g->checkersBoard[row][col] == WHITE_CHECKER || g->checkersBoard[row][col] == WHITE_CROWNED_CHECKER) {
@@ -147,8 +147,8 @@ void makeMove (Game g, Action a, int row, int col) {
     }
 }
 
-int getMostCheckers (Game g) {
-    int answer;
+-(NSInteger) getMostCheckers (Game g) {
+    NSInteger answer;
     if (g->player1->checkers > g->player2->checkers) {
         answer = PLAYER_1;
     } else if (g->player2->checkers > g->player1->checkers) {
@@ -159,20 +159,20 @@ int getMostCheckers (Game g) {
     return answer;
 }
 
-int getMoveNumber (Game g) {
+-(NSInteger) getMoveNumber (Game g) {
     return g->currentTurn;
 }
 
-int getWhoseMove (Game g) {
+-(NSInteger) getWhoseMove (Game g) {
     return (g->currentTurn % 2);
 }
 
-int getPiece (Game g, int row, int col) {
+-(NSInteger) getPiece (Game g, NSInteger row, NSInteger col) {
     return g->checkersBoard[row][col];
 }
 
-int getCheckers (Game g, int player) {
-    int answer;
+-(NSInteger) getCheckers (Game g, NSInteger player) {
+    NSInteger answer;
     if (player == 1) {
         answer = g->player1->checkers;
     } else {
@@ -181,8 +181,8 @@ int getCheckers (Game g, int player) {
     return answer;
 }
 
-int getCrownedCheckers (Game g, int player) {
-    int answer;
+NSInteger getCrownedCheckers (Game g, NSInteger player) {
+    NSInteger answer;
     if (player == 1) {
         answer = g->player1->crownedCheckers;
     } else {
