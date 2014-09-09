@@ -34,52 +34,53 @@ typedef struct _action * Action;
 typedef struct _player * Player;
 
 typedef struct _game {
-    int currentTurn;
-    int checkersBoard[NUM_OF_ROWS][NUM_OF_COLUMNS];
+    NSInteger currentTurn;
+    NSInteger checkersBoard[NUM_OF_ROWS][NUM_OF_COLUMNS];
     Player player1;
     Player player2;
 } game;
 
 // The player structure
 typedef struct _player {
-    int checkers;
-    int crownedCheckers;
+    NSInteger checkers;
+    NSInteger crownedCheckers;
 } player;
 
 // Simple action structure - may include more items later for chess
 typedef struct _action {
-    int actionCode;
+    NSInteger actionCode;
 } action;
 
 // Begin a-new!
-Game newGame (int gameNumber);
+Game newGame (NSInteger gameNumber);
 
 // Game over. Literally.
-void disposeGame (Game g);
+
+-(void) disposeGame (Game g);
 
 // Make a move!
-void makeMove (Game g, Action a, int row, int col);
+-(void) makeMove (Game g, Action a, NSInteger row, NSInteger col);
 
 // Who is currently winning the game?
-int getMostCheckers (Game g);
+ getMostCheckers (Game g);
 
 // How many turns have we played?
-int getMoveNumber (Game g);
+-(NSInteger) getMoveNumber (Game g);
 
 // Is it really your turn?
-int getWhoseMove (Game g);
+-(NSInteger) getWhoseMove (Game g);
 
 // Is there a piece on this square? If so, which one?
-int getPiece (Game g, int row, int col);
+-(NSInteger) getPiece (Game g, NSInteger row, NSInteger col);
 
 // Hm. How many normal checkers do I have?
-int getCheckers (Game g, int player);
+-(NSInteger) getCheckers (Game g, NSInteger player);
 
 // Okay. Now, how many crowned checkers do I have?
-int getCrownedCheckers (Game g, int player);
+-(NSInteger) getCrownedCheckers (Game g, NSInteger player);
 
 // This is a big one. It will require me to find out a few things about the game.
 // Basically, is the move you have specified legal or illegal?
-int isLegalMove (Game g, Action a, int row, int col, int player);
+-(NSInteger) isLegalMove (Game g, Action a, NSInteger row, NSInteger col, NSInteger player);
 
 // Enjoy!
