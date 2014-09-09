@@ -1,0 +1,28 @@
+//
+//  Arduino Code V1.0
+//  Created by Nicholas Pizzino on 9/9/14.
+//
+
+#import "Arduino Code.h"
+
+@implementation Arduino_Code
+
+// Pin 13 has an LED connected on most Arduino boards.
+int led = 13;
+
+// Setup routine runs once when you press reset:
+
+void setup() {
+    // initialize the digital pin as an output.
+    pinMode(led, OUTPUT);
+}
+
+// Loop routine runs over and over again forever:
+void loop() {
+    digitalWrite(led, HIGH);   // Turn the LED on (HIGH is the voltage level)
+    delay(1000);               // Wait for a second
+    digitalWrite(led, LOW);    // Turn the LED off by making the voltage LOW
+    delay(1000);               // Wait for a second
+}
+
+@end
