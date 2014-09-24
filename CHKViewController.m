@@ -139,10 +139,10 @@ int distance = 0;
         
         distance = bestSquare - self.selectedCircle;
         
-        if (((distance == -14 || distance == -18) && onTopofCell[self.selectedCircle].image == [UIImage imageNamed:@"WhiteCheckr.png"]) ||
+        if ((onTopofCell[bestSquare].image == nil) && (((distance == -14 || distance == -18) && onTopofCell[self.selectedCircle].image == [UIImage imageNamed:@"WhiteCheckr.png"]) ||
             ((distance == 14 || distance == 18) && onTopofCell[self.selectedCircle].image == [UIImage imageNamed:@"RedCheckr.png"]) ||
             ((abs(distance) == 14 || abs(distance) == 18) && (onTopofCell[self.selectedCircle].image == [UIImage imageNamed:@"RedCrown.png"] ||
-            onTopofCell[self.selectedCircle].image == [UIImage imageNamed:@"WhiteCrown.png"]))) {
+            onTopofCell[self.selectedCircle].image == [UIImage imageNamed:@"WhiteCrown.png"])))) {
             
             if (currentMove == 0 && (onTopofCell[self.selectedCircle].image == [UIImage imageNamed:@"WhiteCrown.png"] ||
                                      onTopofCell[self.selectedCircle].image == [UIImage imageNamed:@"WhiteCheckr.png"])
